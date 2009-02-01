@@ -1,0 +1,19 @@
+<soundConfig embedSounds="false">
+	<sound>
+		<id>HelloWorld</id>
+		<file>../assets/mp3/HelloWorld.mp3</file>
+		<volume>1</volume>
+		<pan>0</pan>
+		<startTime>0</startTime>
+		<loops>0</loops>
+	</sound>
+	<sound>
+		<!-- Loop by Martin Straka - http://www.martinsnuggles.de -->
+		<id>Loop</id>
+		<file>../assets/mp3/Loop.mp3</file>
+		<volume>0.5</volume>
+		<pan>0</pan>
+		<startTime>23</startTime>
+		<loops>10000</loops>
+	</sound>
+</soundConfig>

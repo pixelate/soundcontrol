@@ -1,0 +1,60 @@
+SoundControl
+A better workflow for developers and sound designers in AS3 projects
+
+In our AS3-only game projects we always ran into the same issues regarding the sound assets. Often we wanted to try out a new sound or adjust the volume of a sound in the context of the actual game to see if it would fit in. This would require our sound designer Martin to send me the new sound file, or tell me "please make this sound +5% louder". I would do the change, recompile the SWF and send it back to him. To achive a good result we would have to do this cycle a couple of times, which was very time-consuming and unsatisfing for both of us.
+
+So I decided to write a little sound helper class called "SoundControl":http://github.com/pixelate/soundcontrol/tree/master to make things easier and more straightforward. Here's how it works:
+
+1. An XML config file is used to store all properties (id, file, volume, pan, startTime and loops) for the sound assets. This makes it easy to do changes directly, like trying out another sound or adjusting the volume.  The startTime which is measured in milliseconds is especially important if you want to loop a mp3 file, since they always have a small gap at the beginning. You can measure this gap in any visual audio editor (such as "Audacity":http://audacity.sourceforge.net/ or "Adobe Soundbooth":http://www.adobe.com/products/soundbooth/) and use the length of the gap as the startTime to loop the sound gaplessly.
+
+<pre>
+<soundConfig embedSounds="false">
+	<sound>
+		<id>HelloWorld</id>
+		<file>../assets/mp3/HelloWorld.mp3</file>
+		<volume>0.5</volume>
+		<pan>0</pan>
+		<startTime>0</startTime>
+		<loops>10000</loops>
+	</sound>
+</soundConfig>
+</pre>
+
+2. You can choose between embedding the sounds in your SWF or to load them dynamically by setting the <code>embedSounds</code> property in the <code>soundConfig</code> tag. When embedding the sounds, you need to add the assets to the EmbeddedSounds class. Make sure to name the class for each asset the same as the id in the XML.
+
+<pre>
+package de.pixelate.pelikan.sound
+{	
+	public class EmbeddedSounds
+	{
+		[Embed(source="../../../../assets/mp3/HelloWorld.mp3")] public static var HelloWorld: Class;
+	}	
+}
+</pre>
+
+3. The SoundControl class enables you to play the sounds defined in the XML. Create an instance of the SoundControl class and add an event listener that will be called once the XML and all sound assets are loaded.
+
+<pre>
+var soundControl: SoundControl = new SoundControl();
+soundControl.addEventListener(Event.INIT, onSoundControlInit);
+</pre>
+
+4. While developing you usually want to dynamically load the XML file, so you can quickly do changes and try out different sounds without recompiling the SWF.
+
+<pre>
+soundControl.loadXMLConfig("xml/soundConfig.xml");
+</pre>
+
+5. For production you might want to compile the XML into your SWF, so you can also pass a XML object to the SoundControl instance instead:
+
+<pre>
+soundControl.setXMLConfig(xml);
+</pre>
+
+6. Both commands will preload the sounds that are specified in the XML and dispatch <code>Event.INIT</code> from the SoundControl instance. Once your event handler is called you can play any sound by its <code>id</code> specified in the XML.
+
+<pre>
+soundControl.playSound("MySound");
+</pre>
+
+That's it!
