@@ -37,8 +37,15 @@ package
 		{
 			_soundControl = new SoundControl();
 			_soundControl.addEventListener(Event.INIT, onSoundControlInit);
+
+			// When embedded in HTML, set basePath to the folder of your main SWF
+			// _soundControl.basePath = "swfs/";
+
+			// Load external XML config file
 			_soundControl.loadXMLConfig("xml/soundConfig.xml");
-//			_soundControl.setXMLConfig(xml);
+
+			// Or use embedded config XML
+			// _soundControl.xmlConfig = xml;
 		}
 
 		private function onSoundControlInit(event: Event):void
@@ -46,6 +53,5 @@ package
 			_soundControl.playSound("HelloWorld");
 			_soundControl.playSound("Loop");
 		}
-
 	}
 }

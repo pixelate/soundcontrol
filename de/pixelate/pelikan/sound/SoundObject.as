@@ -56,7 +56,7 @@ package de.pixelate.pelikan.sound
 			_soundTransform = new SoundTransform(_volume, _pan);
 		}
 
-		public function load():void
+		public function load(basePath: String):void
 		{
 			if(_embed)
 			{				
@@ -65,7 +65,7 @@ package de.pixelate.pelikan.sound
 			}
 			else
 			{
-				var request: URLRequest = new URLRequest(_file);
+				var request: URLRequest = new URLRequest(basePath + _file);
 				_sound = new Sound(request);
 				_sound.addEventListener(Event.COMPLETE, onSoundLoaded);								
 			}			
@@ -80,7 +80,7 @@ package de.pixelate.pelikan.sound
 		{
 			_soundChannel.stop();
 		}
-		
+
 		public function get id():String
 		{
 			return _id;

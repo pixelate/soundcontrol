@@ -32,46 +32,66 @@ package de.pixelate.pelikan.sound
 		
 	public class SoundControl extends EventDispatcher
 	{		
+		public const VERSION: String = "1.0.1";
+		
 		private var _dictionary: Dictionary;
-		private var _xmlData: XML;
+		private var _xmlConfig: XML;
 		private var _xmlConfigLoader: URLLoader;
 		private var _soundsToLoad: int = 0;
 		private var _soundsLoaded: int = 0;
 		private var _embedSounds: Boolean = false;
+		private var _basePath: String = "";
 		
 		public function SoundControl():void
 		{
 			_dictionary = new Dictionary();			
 		}
 
+		public function set basePath(path: String):void
+		{
+			_basePath = path;
+		}
+
+		public function get basePath():String
+		{
+			return _basePath;
+		}
+
+		public function set xmlConfig(xml: XML):void
+		{
+			_xmlConfig = xml;
+			parseXML();
+		}
+
+		public function get xmlConfig():XML
+		{
+			return _xmlConfig;
+		}
+
 		public function loadXMLConfig(url: String):void
 		{
 			_xmlConfigLoader = new URLLoader();
 			_xmlConfigLoader.addEventListener(Event.COMPLETE, onXMLConfigLoaded);
-			_xmlConfigLoader.load( new URLRequest(url) );			
-		}
-
-		public function setXMLConfig(xml: XML):void
-		{
-			_xmlData = xml;
-			parseXML();
+			_xmlConfigLoader.load( new URLRequest(_basePath + url) );			
 		}
 
 		public function playSound(id: String):void
 		{
-			if(_dictionary[id] == null) {
-				throw new Error("Sound with id \"" + id + "\" does not exist.");
-			}
-			
-			var sound: SoundObject = SoundObject(_dictionary[id]);
+			var sound: SoundObject = getSoundObjectFromDictionary(id);
 			sound.play();
+		}
+
+		public function stopSound(id: String):void
+		{
+			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			sound.stop();
 		}
 
 		private function parseXML():void
 		{	
-			_soundsToLoad = _xmlData.sound.length();
+			_soundsToLoad = _xmlConfig.sound.length();
 
-			if(_xmlData.@embedSounds == "true")
+			if(_xmlConfig.@embedSounds == "true")
 			{
 				_embedSounds = true;
 			}
@@ -80,7 +100,7 @@ package de.pixelate.pelikan.sound
 				_embedSounds = false;
 			}
 
-			for each (var sound:XML in _xmlData.sound)
+			for each (var sound:XML in _xmlConfig.sound)
 			{
 				registerSound(sound);				
 			}
@@ -94,14 +114,24 @@ package de.pixelate.pelikan.sound
 			_dictionary[soundId] = soundObject;
 
 			soundObject.addEventListener(Event.COMPLETE, onSoundLoaded);
-			soundObject.load();
+			soundObject.load(_basePath);
+		}
+		
+		private function getSoundObjectFromDictionary(id: String):SoundObject
+		{
+			if(_dictionary[id] == null) {
+				throw new Error("Sound with id \"" + id + "\" does not exist.");
+			}
+			
+			var sound: SoundObject = SoundObject(_dictionary[id]);
+			return sound;
 		}
 
 		private function onXMLConfigLoaded(event: Event):void
 		{			
 			_xmlConfigLoader.removeEventListener(Event.COMPLETE, onXMLConfigLoaded);
 
-			_xmlData = new XML(event.target.data);
+			_xmlConfig = new XML(event.target.data);
 			parseXML();
 		}
 

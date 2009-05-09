@@ -1,0 +1,9 @@
+== Change Log
+
+=== 1.0.1 (Mai 9, 2009)
+* Add optional basePath.
+* Add stopSound to SoundControl.
+* Use getter/setter for xmlConfig.
+
+=== 1.0.0 (February 1, 2009)
+* First release.

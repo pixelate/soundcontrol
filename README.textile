@@ -2,7 +2,7 @@ h2. SoundControl
 
 h3. A better workflow for developers and sound designers in AS3 projects
 
-In our AS3-only game projects we always ran into the same issues regarding the sound assets. Often we wanted to try out a new sound or adjust the volume of a sound in the context of the actual game to see if it would fit in. This would require our sound designer Martin to send me the new sound file, or tell me "please make this sound +5% louder". I would do the change, recompile the SWF and send it back to him. To achive a good result we would have to do this cycle a couple of times, which was very time-consuming and unsatisfing for both of us.
+In our AS3-only game projects we always ran into the same issues regarding the sound assets. Often we wanted to try out a new sound or adjust the volume of a sound in the context of the actual game to see if it would fit in. This would require our sound designer Martin to send me the new sound file, or tell me "please make this sound +5% louder". I would do the change, recompile the SWF and send it back to him. To achieve a good result we would have to do this cycle a couple of times, which was very time-consuming and unsatisfying for both of us.
 
 So I decided to write a little sound helper class called SoundControl to make things easier and more straightforward. Here's how it works:
 
@@ -36,13 +36,14 @@ So I decided to write a little sound helper class called SoundControl to make th
 	var soundControl: SoundControl = new SoundControl();
 	soundControl.addEventListener(Event.INIT, onSoundControlInit);
 
-4. While developing you usually want to dynamically load the XML file, so you can quickly do changes and try out different sounds without recompiling the SWF.
+4. While developing you usually want to dynamically load the XML file, so you can quickly do changes and try out different sounds without recompiling the SWF. Set an optional baseURL that points to the folder where your main SWF resides if the SWF is embedded in HTML.
 
+  soundControl.basePath = "swfs/"; // optional
 	soundControl.loadXMLConfig("xml/soundConfig.xml");
 
 5. For production you might want to compile the XML into your SWF, so you can also pass a XML object to the SoundControl instance instead:
 
-	soundControl.setXMLConfig(xml);
+	soundControl.xmlConfig = xml;
 
 6. Both commands will preload the sounds that are specified in the XML and dispatch Event.INIT from the SoundControl instance. Once your event handler is called you can play any sound by its id specified in the XML.
 
