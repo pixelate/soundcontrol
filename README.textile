@@ -38,7 +38,7 @@ So I decided to write a little sound helper class called SoundControl to make th
 
 4. While developing you usually want to dynamically load the XML file, so you can quickly do changes and try out different sounds without recompiling the SWF. Set an optional baseURL that points to the folder where your main SWF resides if the SWF is embedded in HTML.
 
-  soundControl.basePath = "swfs/"; // optional
+	soundControl.basePath = "swfs/"; // optional
 	soundControl.loadXMLConfig("xml/soundConfig.xml");
 
 5. For production you might want to compile the XML into your SWF, so you can also pass a XML object to the SoundControl instance instead:
