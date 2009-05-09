@@ -43,7 +43,7 @@ So I decided to write a little sound helper class called SoundControl to make th
 
 5. For production you might want to compile the XML into your SWF, so you can also pass a XML object to the SoundControl instance instead:
 
-	soundControl.setXMLConfig(xml);
+	soundControl.xmlConfig = xml;
 
 6. Both commands will preload the sounds that are specified in the XML and dispatch Event.INIT from the SoundControl instance. Once your event handler is called you can play any sound by its id specified in the XML.
 
