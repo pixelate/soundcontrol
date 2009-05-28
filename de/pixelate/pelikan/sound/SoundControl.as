@@ -32,7 +32,7 @@ package de.pixelate.pelikan.sound
 		
 	public class SoundControl extends EventDispatcher
 	{		
-		public const VERSION: String = "1.0.1";
+		public const VERSION: String = "1.0.2";
 		
 		private var _dictionary: Dictionary;
 		private var _xmlConfig: XML;
@@ -85,6 +85,18 @@ package de.pixelate.pelikan.sound
 		{
 			var sound: SoundObject = getSoundObjectFromDictionary(id);
 			sound.stop();
+		}
+
+		public function fadeInSound(id: String):void
+		{
+			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			sound.fadeIn();
+		}
+
+		public function fadeOutSound(id: String):void
+		{
+			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			sound.fadeOut();
 		}
 
 		private function parseXML():void

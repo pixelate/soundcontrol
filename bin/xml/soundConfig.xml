@@ -11,9 +11,11 @@
 		<!-- Loop by Martin Straka - http://www.martinsnuggles.de -->
 		<id>Loop</id>
 		<file>../assets/mp3/Loop.mp3</file>
-		<volume>0.5</volume>
+		<volume>1</volume>
 		<pan>0</pan>
 		<startTime>23</startTime>
 		<loops>10000</loops>
+		<fadeInSpeed>0.01</fadeInSpeed>
+		<fadeOutSpeed>0.005</fadeOutSpeed>
 	</sound>
 </soundConfig>

@@ -25,35 +25,49 @@ package de.pixelate.pelikan.sound
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.TimerEvent;
 	import flash.media.Sound; 
 	import flash.media.SoundChannel; 
 	import flash.media.SoundTransform; 
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
+	import nl.demonsters.debugger.MonsterDebugger;
 		
 	public class SoundObject extends EventDispatcher
 	{		
+		private const FADE_TIMER_RATE: int = 50;
+		private const DEFAULT_FADE_SPEED: Number = 0.01;
+		
 		private var _sound: Sound;
 		private var _soundChannel: SoundChannel;
-		private var _soundTransform: SoundTransform;
 		private var _id: String;
 		private var _file: String;
-		private var _volume: Number;
-		private var _pan: Number;
+		private var _defaultVolume: Number;
+		private var _defaultPan: Number;
+		private var _currentVolume: Number;
+		private var _currentPan: Number;
 		private var _startTime: int;
 		private var _loops: int;
 		private var _embed: Boolean;
+		private var _fadeInSpeed: Number;
+		private var _fadeOutSpeed: Number;
+		private var _fadeTimer: Timer;
+		private var _fadeType: FadeType;
 				
 		public function SoundObject(soundData: XML, embed: Boolean):void
 		{
 			_id = soundData.id;
 			_file = soundData.file;
-			_volume = soundData.volume;
-			_pan = soundData.pan;
+			_defaultVolume = soundData.volume;
+			_defaultPan = soundData.pan;
+			_currentVolume = soundData.volume;
+			_currentPan = soundData.pan;
 			_startTime = soundData.startTime;
-			_loops = soundData.loops;				
+			_loops = soundData.loops;
+			_fadeInSpeed = soundData.fadeInSpeed || DEFAULT_FADE_SPEED;				
+			_fadeOutSpeed = soundData.fadeOutSpeed || DEFAULT_FADE_SPEED;				
 			_embed = embed;
-
-			_soundTransform = new SoundTransform(_volume, _pan);
+			_fadeType = FadeType.None;
 		}
 
 		public function load(basePath: String):void
@@ -73,23 +87,99 @@ package de.pixelate.pelikan.sound
 
 		public function play():void
 		{
-			_soundChannel = _sound.play(_startTime, _loops, _soundTransform);
+			var transform: SoundTransform = new SoundTransform(_currentVolume, _currentPan);
+			_soundChannel = _sound.play(_startTime, _loops, transform);
 		}
 
 		public function stop():void
 		{
 			_soundChannel.stop();
 		}
+		
+		public function fadeIn():void
+		{
+			_currentVolume = 0;
+			_fadeType = FadeType.In;
+			startFade();							
+			play();
+		}
+
+		public function fadeOut():void
+		{
+			_fadeType = FadeType.Out;
+			startFade();							
+		}
 
 		public function get id():String
 		{
 			return _id;
 		}
-		
+
+        private function setVolume(volume: Number):void
+		{
+            var transform: SoundTransform = _soundChannel.soundTransform;
+            transform.volume = volume;
+            _soundChannel.soundTransform = transform;
+        }
+
+     	private function setPan(pan: Number):void
+		{
+            var transform: SoundTransform = _soundChannel.soundTransform;
+            transform.pan = pan;
+            _soundChannel.soundTransform = transform;
+        }
+
+		private function startFade():void
+		{
+			if(!_fadeTimer)
+			{
+				_fadeTimer = new Timer(FADE_TIMER_RATE);
+				_fadeTimer.addEventListener(TimerEvent.TIMER, onFadeTimer);
+				_fadeTimer.start();				
+			}
+		}
+
+		private function stopFade():void
+		{
+			_fadeTimer.stop();
+			_fadeTimer.removeEventListener(TimerEvent.TIMER, onFadeTimer);
+			_fadeTimer = null;
+			_fadeType = FadeType.None;
+		}
+
 		private function onSoundLoaded(event: Event):void
 		{
 			_sound.removeEventListener(Event.COMPLETE, onSoundLoaded);
 			dispatchEvent( new Event(Event.COMPLETE) );
+		}
+		
+		private function onFadeTimer(event: TimerEvent):void
+		{
+			if(_fadeType == FadeType.In)
+			{
+				_currentVolume += _fadeInSpeed;
+
+				if(_currentVolume >= _defaultVolume)
+				{
+					_currentVolume = _defaultVolume;
+					stopFade();
+				}				
+			}
+			else if(_fadeType == FadeType.Out)
+			{
+				_currentVolume -= _fadeOutSpeed;
+
+				if(_currentVolume <= 0)
+				{
+					_currentVolume = 0;
+					stopFade();
+					_soundChannel.stop();
+				}				
+			}
+			
+			MonsterDebugger.trace(this, _currentVolume);
+
+			setVolume(_currentVolume);
 		}
 	}
 }

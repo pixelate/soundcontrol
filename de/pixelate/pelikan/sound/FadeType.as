@@ -21,51 +21,24 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package
-{	
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.display.Sprite;
-	import flash.utils.Timer;
-	import de.pixelate.pelikan.sound.SoundControl;
-	import nl.demonsters.debugger.MonsterDebugger;
+package de.pixelate.pelikan.sound
+{
+	public class FadeType
+	{
+	    public static const None: FadeType = new FadeType("None");
+	    public static const In: FadeType = new FadeType("In");
+	    public static const Out: FadeType = new FadeType("Out");
 
-	[SWF( backgroundColor='0x000000', frameRate='1000', width='400', height='540')]
+        private var _name: String;
 
-	public class Main extends Sprite
-	{	
-		private var _soundControl: SoundControl;
+	    public function FadeType(name: String)
+	    {
+	        _name = name;
+	    }
 
-		public function Main()
+		public function toString():String
 		{
-			MonsterDebugger.clearTraces();
-			
-			_soundControl = new SoundControl();
-			_soundControl.addEventListener(Event.INIT, onSoundControlInit);
-
-			// When embedded in HTML, set basePath to the folder of your main SWF
-			// _soundControl.basePath = "swfs/";
-
-			// Load external XML config file
-			_soundControl.loadXMLConfig("xml/soundConfig.xml");
-
-			// Or use embedded config XML
-			// _soundControl.xmlConfig = xml;
-		}
-
-		private function onSoundControlInit(event: Event):void
-		{
-			var timer: Timer = new Timer(10000, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			timer.start();
-			
-			_soundControl.playSound("HelloWorld");
-			_soundControl.fadeInSound("Loop");
-		}
-		
-		private function onTimerComplete(event: TimerEvent):void
-		{
-			_soundControl.fadeOutSound("Loop");			
+			return _name;
 		}
 	}
 }
