@@ -31,12 +31,11 @@ package de.pixelate.pelikan.sound
 	import flash.media.SoundTransform; 
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
-	import nl.demonsters.debugger.MonsterDebugger;
 		
 	public class SoundObject extends EventDispatcher
 	{		
 		private const FADE_TIMER_RATE: int = 50;
-		private const DEFAULT_FADE_SPEED: Number = 0.01;
+		private const DEFAULT_FADE_TIME: Number = 2.0;
 		
 		private var _sound: Sound;
 		private var _soundChannel: SoundChannel;
@@ -64,8 +63,25 @@ package de.pixelate.pelikan.sound
 			_currentPan = soundData.pan;
 			_startTime = soundData.startTime;
 			_loops = soundData.loops;
-			_fadeInSpeed = soundData.fadeInSpeed || DEFAULT_FADE_SPEED;				
-			_fadeOutSpeed = soundData.fadeOutSpeed || DEFAULT_FADE_SPEED;				
+			
+			if ("fadeInTime" in soundData)
+			{
+				_fadeInSpeed = calculateFadeSpeed(soundData.fadeInTime);								
+			}
+			else
+			{
+				_fadeInSpeed = calculateFadeSpeed(DEFAULT_FADE_TIME);												
+			}
+			
+			if ("fadeOutTime" in soundData)
+			{
+				_fadeOutSpeed = calculateFadeSpeed(soundData.fadeOutTime);				
+			}
+			else
+			{
+				_fadeOutSpeed = calculateFadeSpeed(DEFAULT_FADE_TIME);				
+			}
+			
 			_embed = embed;
 			_fadeType = FadeType.None;
 		}
@@ -147,6 +163,11 @@ package de.pixelate.pelikan.sound
 			_fadeType = FadeType.None;
 		}
 
+		private function calculateFadeSpeed(fadeTime: Number):Number
+		{
+			return FADE_TIMER_RATE / (fadeTime * 1000);				
+		}
+		
 		private function onSoundLoaded(event: Event):void
 		{
 			_sound.removeEventListener(Event.COMPLETE, onSoundLoaded);
@@ -177,8 +198,6 @@ package de.pixelate.pelikan.sound
 				}				
 			}
 			
-			MonsterDebugger.trace(this, _currentVolume);
-
 			setVolume(_currentVolume);
 		}
 	}

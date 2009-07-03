@@ -28,7 +28,6 @@ package
 	import flash.display.Sprite;
 	import flash.utils.Timer;
 	import de.pixelate.pelikan.sound.SoundControl;
-	import nl.demonsters.debugger.MonsterDebugger;
 
 	[SWF( backgroundColor='0x000000', frameRate='1000', width='400', height='540')]
 
@@ -37,9 +36,7 @@ package
 		private var _soundControl: SoundControl;
 
 		public function Main()
-		{
-			MonsterDebugger.clearTraces();
-			
+		{			
 			_soundControl = new SoundControl();
 			_soundControl.addEventListener(Event.INIT, onSoundControlInit);
 

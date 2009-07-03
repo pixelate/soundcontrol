@@ -15,7 +15,7 @@
 		<pan>0</pan>
 		<startTime>23</startTime>
 		<loops>10000</loops>
-		<fadeInSpeed>0.01</fadeInSpeed>
-		<fadeOutSpeed>0.005</fadeOutSpeed>
+		<fadeInTime>1.0</fadeInTime>
+		<fadeOutTime>8.0</fadeOutTime>
 	</sound>
 </soundConfig>
