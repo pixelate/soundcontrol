@@ -77,26 +77,36 @@ package de.pixelate.pelikan.sound
 
 		public function playSound(id: String):void
 		{
-			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			var sound: SoundObject = getSound(id);
 			sound.play();
 		}
 
 		public function stopSound(id: String):void
 		{
-			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			var sound: SoundObject = getSound(id);
 			sound.stop();
 		}
 
 		public function fadeInSound(id: String):void
 		{
-			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			var sound: SoundObject = getSound(id);
 			sound.fadeIn();
 		}
 
 		public function fadeOutSound(id: String):void
 		{
-			var sound: SoundObject = getSoundObjectFromDictionary(id);
+			var sound: SoundObject = getSound(id);
 			sound.fadeOut();
+		}
+
+		public function getSound(id: String):SoundObject
+		{
+			if(_dictionary[id] == null) {
+				throw new Error("Sound with id \"" + id + "\" does not exist.");
+			}
+			
+			var sound: SoundObject = SoundObject(_dictionary[id]);
+			return sound;
 		}
 
 		private function parseXML():void
@@ -129,16 +139,6 @@ package de.pixelate.pelikan.sound
 			soundObject.load(_basePath);
 		}
 		
-		private function getSoundObjectFromDictionary(id: String):SoundObject
-		{
-			if(_dictionary[id] == null) {
-				throw new Error("Sound with id \"" + id + "\" does not exist.");
-			}
-			
-			var sound: SoundObject = SoundObject(_dictionary[id]);
-			return sound;
-		}
-
 		private function onXMLConfigLoaded(event: Event):void
 		{			
 			_xmlConfigLoader.removeEventListener(Event.COMPLETE, onXMLConfigLoaded);

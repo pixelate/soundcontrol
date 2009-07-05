@@ -131,17 +131,17 @@ package de.pixelate.pelikan.sound
 			return _id;
 		}
 
-        private function setVolume(volume: Number):void
+        public function set volume(value: Number):void
 		{
             var transform: SoundTransform = _soundChannel.soundTransform;
-            transform.volume = volume;
+            transform.volume = value;
             _soundChannel.soundTransform = transform;
         }
 
-     	private function setPan(pan: Number):void
+     	public function set pan(value: Number):void
 		{
             var transform: SoundTransform = _soundChannel.soundTransform;
-            transform.pan = pan;
+            transform.pan = value;
             _soundChannel.soundTransform = transform;
         }
 
@@ -198,7 +198,7 @@ package de.pixelate.pelikan.sound
 				}				
 			}
 			
-			setVolume(_currentVolume);
+			volume = _currentVolume;
 		}
 	}
 }
