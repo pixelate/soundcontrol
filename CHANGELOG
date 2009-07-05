@@ -1,12 +1,14 @@
 == Change Log
 
-=== 1.0.2 ()
+=== 1.0.2 (July 5, 2009)
 * Added fadeInSound and fadeOutSound to SoundControl
+* Renamed getSoundFromDictionary to getSound in SoundControl and made it public
+* Made setters for volume and pan in SoundObject public and used implict setter function
 
 === 1.0.1 (Mai 9, 2009)
-* Add optional basePath.
-* Add stopSound to SoundControl.
-* Use getter/setter for xmlConfig.
+* Added optional basePath.
+* Added stopSound to SoundControl.
+* Used getter/setter for xmlConfig.
 
 === 1.0.0 (February 1, 2009)
 * First release.
