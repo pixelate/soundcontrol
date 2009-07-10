@@ -21,7 +21,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.pixelate.pelikan.sound
+package de.pixelate.soundcontrol
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

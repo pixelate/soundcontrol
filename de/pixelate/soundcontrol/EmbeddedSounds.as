@@ -21,12 +21,12 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.pixelate.pelikan.sound
+package de.pixelate.soundcontrol
 {	
 	public class EmbeddedSounds
 	{		
 		// Uncomment this if you want to embed the sound assets into the SWF		
 		// [Embed(source="../../../../assets/mp3/HelloWorld.mp3")] public static var HelloWorld: Class;
 		// [Embed(source="../../../../assets/mp3/Loop.mp3")] public static var Loop: Class;
-		}	
+	}	
 }

@@ -23,46 +23,18 @@
 
 package
 {	
-	import flash.events.Event;
-	import flash.events.TimerEvent;
 	import flash.display.Sprite;
-	import flash.utils.Timer;
-	import de.pixelate.pelikan.sound.SoundControl;
+	import de.pixelate.demo.SoundControlDemo;
 
-	[SWF( backgroundColor='0x000000', frameRate='1000', width='400', height='540')]
+	[SWF( backgroundColor='0x000000', frameRate='50', width='400', height='540')]
 
 	public class Main extends Sprite
 	{	
-		private var _soundControl: SoundControl;
-
 		public function Main()
-		{			
-			_soundControl = new SoundControl();
-			_soundControl.addEventListener(Event.INIT, onSoundControlInit);
-
-			// When embedded in HTML, set basePath to the folder of your main SWF
-			// _soundControl.basePath = "swfs/";
-
-			// Load external XML config file
-			_soundControl.loadXMLConfig("xml/soundConfig.xml");
-
-			// Or use embedded config XML
-			// _soundControl.xmlConfig = xml;
-		}
-
-		private function onSoundControlInit(event: Event):void
-		{
-			var timer: Timer = new Timer(10000, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			timer.start();
-			
-			_soundControl.playSound("HelloWorld");
-			_soundControl.fadeInSound("Loop");
-		}
-		
-		private function onTimerComplete(event: TimerEvent):void
-		{
-			_soundControl.fadeOutSound("Loop");			
+		{	
+			// See example usage in SoundControlDemo
+			var demo: SoundControlDemo = new SoundControlDemo();
+			addChild(demo);
 		}
 	}
 }

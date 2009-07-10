@@ -21,7 +21,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.pixelate.pelikan.sound
+package de.pixelate.soundcontrol
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -32,7 +32,7 @@ package de.pixelate.pelikan.sound
 		
 	public class SoundControl extends EventDispatcher
 	{		
-		public const VERSION: String = "1.0.2";
+		public static const VERSION: String = "1.0.3";
 		
 		private var _dictionary: Dictionary;
 		private var _xmlConfig: XML;

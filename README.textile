@@ -23,30 +23,30 @@ So I decided to write a little sound helper class called SoundControl to make th
 
 2. You can choose between embedding the sounds in your SWF or to load them dynamically by setting the embedSounds property in the soundConfig tag. When embedding the sounds, you need to add the assets to the EmbeddedSounds class. Make sure to name the class for each asset the same as the id in the XML.
 
-	package de.pixelate.pelikan.sound
-	{	
-		public class EmbeddedSounds
-		{
-			[Embed(source="../../../../assets/mp3/HelloWorld.mp3")] public static var HelloWorld: Class;
-		}	
-	}
+  package de.pixelate.pelikan.sound
+  {	
+    public class EmbeddedSounds
+    {
+      [Embed(source="../../../../assets/mp3/HelloWorld.mp3")] public static var HelloWorld: Class;
+    }	
+  }
 
 3. The SoundControl class enables you to play the sounds defined in the XML. Create an instance of the SoundControl class and add an event listener that will be called once the XML and all sound assets are loaded.
 
-	var soundControl: SoundControl = new SoundControl();
-	soundControl.addEventListener(Event.INIT, onSoundControlInit);
+  var soundControl: SoundControl = new SoundControl();
+  soundControl.addEventListener(Event.INIT, onSoundControlInit);
 
 4. While developing you usually want to dynamically load the XML file, so you can quickly do changes and try out different sounds without recompiling the SWF. Set an optional baseURL that points to the folder where your main SWF resides if the SWF is embedded in HTML.
 
-	soundControl.basePath = "swfs/"; // optional
-	soundControl.loadXMLConfig("xml/soundConfig.xml");
+  soundControl.basePath = "swfs/"; // optional
+  soundControl.loadXMLConfig("xml/soundConfig.xml");
 
 5. For production you might want to compile the XML into your SWF, so you can also pass a XML object to the SoundControl instance instead:
 
-	soundControl.xmlConfig = xml;
+  soundControl.xmlConfig = xml;
 
 6. Both commands will preload the sounds that are specified in the XML and dispatch Event.INIT from the SoundControl instance. Once your event handler is called you can play any sound by its id specified in the XML.
 
-	soundControl.playSound("MySound");
+  soundControl.playSound("MySound");
 
 That's it!

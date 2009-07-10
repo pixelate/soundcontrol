@@ -1,14 +1,19 @@
 == Change Log
 
+=== 1.0.3 (July 10, 2009)
+* Added SoundEvent that bubbles on default
+* Renamed package from de.pixelate.pelikan.sound to de.pixelate.soundcontrol since the Pelikan libary is no longer under active development
+* Moved example code into de.pixelate.demo.SoundControlDemo and added graphical equalizer
+
 === 1.0.2 (July 5, 2009)
 * Added fadeInSound and fadeOutSound to SoundControl
 * Renamed getSoundFromDictionary to getSound in SoundControl and made it public
 * Made setters for volume and pan in SoundObject public and used implict setter function
 
 === 1.0.1 (Mai 9, 2009)
-* Added optional basePath.
-* Added stopSound to SoundControl.
-* Used getter/setter for xmlConfig.
+* Added optional basePath
+* Added stopSound to SoundControl
+* Used getter/setter for xmlConfig
 
 === 1.0.0 (February 1, 2009)
 * First release.
