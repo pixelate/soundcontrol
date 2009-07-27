@@ -122,8 +122,11 @@ package de.pixelate.soundcontrol
 
 		public function fadeOut():void
 		{
-			_fadeType = FadeType.Out;
-			startFade();							
+			if(_soundChannel)
+			{
+				_fadeType = FadeType.Out;
+				startFade();							
+			}		
 		}
 
 		public function get id():String
@@ -133,17 +136,49 @@ package de.pixelate.soundcontrol
 
         public function set volume(value: Number):void
 		{
-            var transform: SoundTransform = _soundChannel.soundTransform;
-            transform.volume = value;
-            _soundChannel.soundTransform = transform;
+			_currentVolume = value;
+			if(_soundChannel)
+			{
+	            var transform: SoundTransform = _soundChannel.soundTransform;
+	            transform.volume = value;
+	            _soundChannel.soundTransform = transform;				
+			}
         }
+
+		public function get volume():Number
+		{
+			if(_soundChannel)
+			{
+				return _soundChannel.soundTransform.volume;				
+			}
+			else
+			{
+				return 0;
+			}
+		}
 
      	public function set pan(value: Number):void
 		{
-            var transform: SoundTransform = _soundChannel.soundTransform;
-            transform.pan = value;
-            _soundChannel.soundTransform = transform;
+			_currentPan = value;
+			if(_soundChannel)
+			{
+	            var transform: SoundTransform = _soundChannel.soundTransform;
+	            transform.pan = value;
+	            _soundChannel.soundTransform = transform;				
+			}
         }
+
+		public function get pan():Number
+		{
+			if(_soundChannel)
+			{
+				return _soundChannel.soundTransform.pan;				
+			}
+			else
+			{
+				return 0;
+			}
+		}
 
 		private function startFade():void
 		{

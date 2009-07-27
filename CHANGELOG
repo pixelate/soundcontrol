@@ -1,5 +1,11 @@
 == Change Log
 
+=== 1.0.4 (July 27, 2009)
+* Added SoundEvent.STOP_SOUND
+* Added getter for volume and pan in SoundObject
+* Check if _soundChannel exists in fadeOut() and setter for volume and pan in SoundObject
+* Check if sound with id exists for playSound(), stopSound(), fadeInSound() and fadeOutSound() in SoundControl
+
 === 1.0.3 (July 10, 2009)
 * Added SoundEvent that bubbles on default
 * Renamed package from de.pixelate.pelikan.sound to de.pixelate.soundcontrol since the Pelikan libary is no longer under active development

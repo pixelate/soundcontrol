@@ -89,6 +89,9 @@ package de.pixelate.demo
 				case SoundEvent.PLAY_SOUND:
 					_soundControl.playSound(event.soundId);
 					break;
+				case SoundEvent.STOP_SOUND:
+					_soundControl.stopSound(event.soundId);
+					break;
 				case SoundEvent.FADEIN_SOUND:
 					_soundControl.fadeInSound(event.soundId);
 					break;

@@ -32,7 +32,7 @@ package de.pixelate.soundcontrol
 		
 	public class SoundControl extends EventDispatcher
 	{		
-		public static const VERSION: String = "1.0.3";
+		public static const VERSION: String = "1.0.4";
 		
 		private var _dictionary: Dictionary;
 		private var _xmlConfig: XML;
@@ -78,27 +78,38 @@ package de.pixelate.soundcontrol
 		public function playSound(id: String):void
 		{
 			var sound: SoundObject = getSound(id);
-			sound.play();
+			if(sound)
+			{
+				sound.play();				
+			}
 		}
 
 		public function stopSound(id: String):void
 		{
 			var sound: SoundObject = getSound(id);
-			sound.stop();
+			if(sound)
+			{
+				sound.stop();				
+			}
 		}
 
 		public function fadeInSound(id: String):void
 		{
 			var sound: SoundObject = getSound(id);
-			sound.fadeIn();
+			if(sound)
+			{
+				sound.fadeIn();				
+			}
 		}
 
 		public function fadeOutSound(id: String):void
 		{
 			var sound: SoundObject = getSound(id);
-			sound.fadeOut();
+			if(sound)
+			{
+				sound.fadeOut();				
+			}
 		}
-
 		public function getSound(id: String):SoundObject
 		{
 			if(_dictionary[id] == null) {
