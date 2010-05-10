@@ -1,6 +1,7 @@
 == Change Log
 
 === 1.0.5 (May 10, 2010)
+* Fixed calculation of fade duration
 * Removed ExampleSprite from SoundControlDemo, used this instead
 * Added registerEventListener tp SoundControl
 * Added fadeOutAndStopSound to SoundControl
