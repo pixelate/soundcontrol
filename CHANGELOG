@@ -3,7 +3,7 @@
 === 1.0.5 (May 10, 2010)
 * Fixed calculation of fade duration
 * Removed ExampleSprite from SoundControlDemo, used this instead
-* Added registerEventListener tp SoundControl
+* Added registerEventListener to SoundControl
 * Added fadeOutAndStopSound to SoundControl
 * Check if SoundObject is already playing when calling play()
 * Check if _soundChannel exists in stop() in SoundObject
