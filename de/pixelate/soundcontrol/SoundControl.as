@@ -32,7 +32,7 @@ package de.pixelate.soundcontrol
 		
 	public class SoundControl extends EventDispatcher
 	{		
-		public static const VERSION: String = "1.0.4";
+		public static const VERSION: String = "1.0.5";
 		
 		private var _dictionary: Dictionary;
 		private var _xmlConfig: XML;
@@ -110,6 +110,16 @@ package de.pixelate.soundcontrol
 				sound.fadeOut();				
 			}
 		}
+		
+		public function fadeOutAndStopSound(id: String):void
+		{
+			var sound: SoundObject = getSound(id);
+			if(sound)
+			{
+				sound.fadeOutAndStop();				
+			}
+		}
+		
 		public function getSound(id: String):SoundObject
 		{
 			if(_dictionary[id] == null) {
@@ -119,7 +129,16 @@ package de.pixelate.soundcontrol
 			var sound: SoundObject = SoundObject(_dictionary[id]);
 			return sound;
 		}
-
+		
+		public function registerEventListeners(target:EventDispatcher):void
+		{
+			target.addEventListener(SoundEvent.PLAY_SOUND, onSoundEvent);
+			target.addEventListener(SoundEvent.STOP_SOUND, onSoundEvent);
+			target.addEventListener(SoundEvent.FADEIN_SOUND, onSoundEvent);
+			target.addEventListener(SoundEvent.FADEOUT_SOUND, onSoundEvent);			
+			target.addEventListener(SoundEvent.FADEOUT_AND_STOP_SOUND, onSoundEvent);			
+		}
+		
 		private function parseXML():void
 		{	
 			_soundsToLoad = _xmlConfig.sound.length();
@@ -167,5 +186,27 @@ package de.pixelate.soundcontrol
 				dispatchEvent( new Event(Event.INIT) );
 			}
 		}
+		
+		private function onSoundEvent(event: SoundEvent):void
+		{
+			switch(event.type)
+			{
+				case SoundEvent.PLAY_SOUND:
+					playSound(event.soundId);
+					break;
+				case SoundEvent.STOP_SOUND:
+					stopSound(event.soundId);
+					break;
+				case SoundEvent.FADEIN_SOUND:
+					fadeInSound(event.soundId);
+					break;
+				case SoundEvent.FADEOUT_SOUND:
+					fadeOutSound(event.soundId);
+					break;
+				case SoundEvent.FADEOUT_AND_STOP_SOUND:
+					fadeOutAndStopSound(event.soundId);
+					break;
+			}
+		}		
 	}
 }

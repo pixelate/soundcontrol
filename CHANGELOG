@@ -1,5 +1,12 @@
 == Change Log
 
+=== 1.0.5 (May 10, 2010)
+* Removed ExampleSprite from SoundControlDemo, used this instead
+* Added registerEventListener tp SoundControl
+* Added fadeOutAndStopSound to SoundControl
+* Check if SoundObject is already playing when calling play()
+* Check if _soundChannel exists in stop() in SoundObject
+
 === 1.0.4 (July 27, 2009)
 * Added SoundEvent.STOP_SOUND
 * Added getter for volume and pan in SoundObject

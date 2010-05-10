@@ -28,6 +28,7 @@ package de.pixelate.soundcontrol
 	    public static const None: FadeType = new FadeType("None");
 	    public static const In: FadeType = new FadeType("In");
 	    public static const Out: FadeType = new FadeType("Out");
+	    public static const OutAndStop: FadeType = new FadeType("OutAndStop");
 
         private var _name: String;
 

@@ -32,7 +32,6 @@ package de.pixelate.demo
 
 	public class SoundControlDemo extends Sprite
 	{
-		private var _exampleSprite: Sprite;
 		private var _demoGUI: SoundControlDemoGUI;
 		private var _soundControl: SoundControl;
 		
@@ -50,12 +49,8 @@ package de.pixelate.demo
 			// Or use embedded config XML
 			// _soundControl.xmlConfig = xml;
 			
-			// Use SoundEvents to trigger a sound from another object on the display list			
-			_exampleSprite = new Sprite();
-			_exampleSprite.addEventListener(SoundEvent.PLAY_SOUND, onSoundEvent);
-			_exampleSprite.addEventListener(SoundEvent.FADEIN_SOUND, onSoundEvent);
-			_exampleSprite.addEventListener(SoundEvent.FADEOUT_SOUND, onSoundEvent);
-			addChild(_exampleSprite);			
+			// Use SoundEvents to trigger a sound from object on the display list			
+			_soundControl.registerEventListeners(this);
 
 			_demoGUI = new SoundControlDemoGUI();
 			addChild(_demoGUI);
@@ -63,7 +58,7 @@ package de.pixelate.demo
 		
 		private function onSoundControlInit(event: Event):void
 		{
-			var timer: Timer = new Timer(10000, 1);
+			var timer: Timer = new Timer(2000, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			timer.start();
 
@@ -71,34 +66,15 @@ package de.pixelate.demo
 			_soundControl.playSound("HelloWorld");
 			_soundControl.fadeInSound("Loop");
 			
-			// Or dispatch events from objects on the display list 
-			// _exampleSprite.dispatchEvent( new SoundEvent(SoundEvent.PLAY_SOUND, "HelloWorld") );			
-			// _exampleSprite.dispatchEvent( new SoundEvent(SoundEvent.FADEIN_SOUND, "Loop") );			
+			// Or dispatch events from any object on the display list 
+			// dispatchEvent( new SoundEvent(SoundEvent.PLAY_SOUND, "HelloWorld") );			
+			// dispatchEvent( new SoundEvent(SoundEvent.FADEIN_SOUND, "Loop") );			
 		}
 		
 		private function onTimerComplete(event: TimerEvent):void
 		{
-			_soundControl.fadeOutSound("Loop");
-			// _exampleSprite.dispatchEvent( new SoundEvent(SoundEvent.FADEOUT_SOUND, "Loop") );			
-		}
-
-		private function onSoundEvent(event: SoundEvent):void
-		{
-			switch (event.type)
-			{
-				case SoundEvent.PLAY_SOUND:
-					_soundControl.playSound(event.soundId);
-					break;
-				case SoundEvent.STOP_SOUND:
-					_soundControl.stopSound(event.soundId);
-					break;
-				case SoundEvent.FADEIN_SOUND:
-					_soundControl.fadeInSound(event.soundId);
-					break;
-				case SoundEvent.FADEOUT_SOUND:
-					_soundControl.fadeOutSound(event.soundId);
-					break;
-			}
+			_soundControl.fadeOutAndStopSound("Loop");
+			// dispatchEvent( new SoundEvent(SoundEvent.FADEOUT_AND_STOP_SOUND, "Loop") );			
 		}
 	}
 }

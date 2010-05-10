@@ -33,6 +33,7 @@ package de.pixelate.soundcontrol
 		public static const STOP_SOUND: String = "stop_sound";
 		public static const FADEIN_SOUND: String = "fadein_sound";
 		public static const FADEOUT_SOUND: String = "fadeout_sound";
+		public static const FADEOUT_AND_STOP_SOUND: String = "fadeout_and_stop_sound";
 
 		public function SoundEvent(type:String, soundId: String)
 		{

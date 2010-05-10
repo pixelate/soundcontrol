@@ -31,6 +31,7 @@ package de.pixelate.soundcontrol
 	import flash.media.SoundTransform; 
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 		
 	public class SoundObject extends EventDispatcher
 	{		
@@ -48,10 +49,13 @@ package de.pixelate.soundcontrol
 		private var _startTime: int;
 		private var _loops: int;
 		private var _embed: Boolean;
-		private var _fadeInSpeed: Number;
-		private var _fadeOutSpeed: Number;
+		private var _fadeInDuration: Number;
+		private var _fadeOutDuration: Number;
 		private var _fadeTimer: Timer;
 		private var _fadeType: FadeType;
+		private var _isPlaying: Boolean;
+		private var _lastMilliseconds: int;
+		private var _currentMilliseconds: int;
 				
 		public function SoundObject(soundData: XML, embed: Boolean):void
 		{
@@ -66,24 +70,25 @@ package de.pixelate.soundcontrol
 			
 			if ("fadeInTime" in soundData)
 			{
-				_fadeInSpeed = calculateFadeSpeed(soundData.fadeInTime);								
+				_fadeInDuration = soundData.fadeInTime * 1000;								
 			}
 			else
 			{
-				_fadeInSpeed = calculateFadeSpeed(DEFAULT_FADE_TIME);												
+				_fadeInDuration = DEFAULT_FADE_TIME * 1000;												
 			}
 			
 			if ("fadeOutTime" in soundData)
 			{
-				_fadeOutSpeed = calculateFadeSpeed(soundData.fadeOutTime);				
+				_fadeOutDuration = soundData.fadeOutTime * 1000;				
 			}
 			else
 			{
-				_fadeOutSpeed = calculateFadeSpeed(DEFAULT_FADE_TIME);				
+				_fadeOutDuration = DEFAULT_FADE_TIME * 1000;				
 			}
 			
 			_embed = embed;
 			_fadeType = FadeType.None;
+			_isPlaying = false;
 		}
 
 		public function load(basePath: String):void
@@ -103,13 +108,22 @@ package de.pixelate.soundcontrol
 
 		public function play():void
 		{
-			var transform: SoundTransform = new SoundTransform(_currentVolume, _currentPan);
-			_soundChannel = _sound.play(_startTime, _loops, transform);
+			if(!_isPlaying || _loops == 0)
+			{
+				_isPlaying = true;
+				var transform: SoundTransform = new SoundTransform(_currentVolume, _currentPan);
+				_soundChannel = _sound.play(_startTime, _loops, transform);				
+				_soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+			}
 		}
 
 		public function stop():void
 		{
-			_soundChannel.stop();
+			if(_isPlaying)
+			{
+				_soundChannel.stop();				
+				_isPlaying = false;
+			}
 		}
 		
 		public function fadeIn():void
@@ -122,9 +136,18 @@ package de.pixelate.soundcontrol
 
 		public function fadeOut():void
 		{
-			if(_soundChannel)
+			if(_isPlaying)
 			{
 				_fadeType = FadeType.Out;
+				startFade();							
+			}		
+		}
+
+		public function fadeOutAndStop():void
+		{
+			if(_isPlaying)
+			{
+				_fadeType = FadeType.OutAndStop;
 				startFade();							
 			}		
 		}
@@ -132,6 +155,11 @@ package de.pixelate.soundcontrol
 		public function get id():String
 		{
 			return _id;
+		}
+
+		public function get isPlaying():Boolean
+		{
+			return _isPlaying;
 		}
 
         public function set volume(value: Number):void
@@ -187,6 +215,7 @@ package de.pixelate.soundcontrol
 				_fadeTimer = new Timer(FADE_TIMER_RATE);
 				_fadeTimer.addEventListener(TimerEvent.TIMER, onFadeTimer);
 				_fadeTimer.start();				
+				_lastMilliseconds = getTimer();
 			}
 		}
 
@@ -198,9 +227,9 @@ package de.pixelate.soundcontrol
 			_fadeType = FadeType.None;
 		}
 
-		private function calculateFadeSpeed(fadeTime: Number):Number
+		private function calculateFadeSpeed(timeDelta: Number, fadeDuration: Number):Number
 		{
-			return FADE_TIMER_RATE / (fadeTime * 1000);				
+			return timeDelta * (1.0 / fadeDuration);
 		}
 		
 		private function onSoundLoaded(event: Event):void
@@ -208,12 +237,21 @@ package de.pixelate.soundcontrol
 			_sound.removeEventListener(Event.COMPLETE, onSoundLoaded);
 			dispatchEvent( new Event(Event.COMPLETE) );
 		}
+
+		private function onSoundComplete(event: Event):void
+		{
+			_soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+			_isPlaying = false;
+		}
 		
 		private function onFadeTimer(event: TimerEvent):void
 		{
+			_currentMilliseconds = getTimer() - _lastMilliseconds;
+			_lastMilliseconds = getTimer();			
+
 			if(_fadeType == FadeType.In)
 			{
-				_currentVolume += _fadeInSpeed;
+				_currentVolume += calculateFadeSpeed(_currentMilliseconds, _fadeInDuration);
 
 				if(_currentVolume >= _defaultVolume)
 				{
@@ -221,19 +259,23 @@ package de.pixelate.soundcontrol
 					stopFade();
 				}				
 			}
-			else if(_fadeType == FadeType.Out)
+			else if(_fadeType == FadeType.Out || _fadeType == FadeType.OutAndStop)
 			{
-				_currentVolume -= _fadeOutSpeed;
+				_currentVolume -= calculateFadeSpeed(_currentMilliseconds, _fadeOutDuration);
 
 				if(_currentVolume <= 0)
 				{
 					_currentVolume = 0;
 					stopFade();
-					_soundChannel.stop();
+
+					if(_fadeType == FadeType.OutAndStop)
+					{
+						stop();						
+					}
 				}				
 			}
 			
-			volume = _currentVolume;
+			volume = _currentVolume;			
 		}
 	}
 }

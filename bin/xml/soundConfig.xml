@@ -8,14 +8,14 @@
 		<loops>0</loops>
 	</sound>
 	<sound>
-		<!-- Loop by Martin Straka - http://www.martinsnuggles.de -->
+		<!-- Loop by Martin Straka - http://www.martinstraka.de -->
 		<id>Loop</id>
 		<file>../assets/mp3/Loop.mp3</file>
 		<volume>1</volume>
 		<pan>0</pan>
 		<startTime>23</startTime>
 		<loops>10000</loops>
-		<fadeInTime>1.0</fadeInTime>
-		<fadeOutTime>8.0</fadeOutTime>
+		<fadeInTime>2.0</fadeInTime>
+		<fadeOutTime>10.0</fadeOutTime>
 	</sound>
 </soundConfig>
